@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#0f3d28" />
+  <title>Intercambio Navideño Familia Morán 🎄</title>
+  <style>
+    :root {
+      --pine-dark: #092618;
+      --pine: #11442c;
+      --pine-light: #1c6342;
+      --crimson: #b81d24;
+      --crimson-dark: #871117;
+      --gold: #e5b84b;
+      --gold-light: #fce39c;
+      --cream: #fcf9f2;
+      --paper: #fffdf9;
+      --text-main: #1f2923;
+      --text-muted: #5a6b61;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(circle at top, var(--pine-light) 0%, var(--pine) 55%, var(--pine-dark) 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #snowCanvas, #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    #snowCanvas { z-index: 1; }
+    #confettiCanvas { z-index: 50; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(9, 38, 24, 0.9);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(229, 184, 75, 0.35);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .topbar-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px 16px 48px;
+    }
+
+    .card {
+      background: var(--paper);
+      border-radius: 20px;
+      padding: 24px 20px;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
+      border: 2px solid rgba(229, 184, 75, 0.6);
+      margin-bottom: 20px;
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+      color: var(--pine-dark);
+    }
+
+    .hero-header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: #fdf3d7;
+      color: #8a6209;
+      border: 1px solid var(--gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .hero-header h1 {
+      font-size: 1.65rem;
+      margin-bottom: 6px;
+      color: var(--crimson-dark);
+    }
+
+    .hero-header p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-dark) 100%);
+      color: #fff;
+      border: 2px solid var(--gold);
+      border-radius: 14px;
+      padding: 16px 20px;
+      font-size: 1.08rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(184, 29, 36, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background: var(--pine);
+      color: #fff;
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.97);
+    }
+
+    .family-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin: 16px 0 20px;
+    }
+
+    @media (min-width: 540px) {
+      .family-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .family-box {
+      background: var(--cream);
+      border: 1px solid #e4dcc8;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .family-box h4 {
+      margin: 0 0 6px;
+      font-size: 0.9rem;
+      color: var(--pine);
+      border-bottom: 1px dashed #d6ccb4;
+      padding-bottom: 4px;
+    }
+
+    .family-box ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .family-box li {
+      margin-bottom: 2px;
+    }
+
+    .rules-note {
+      background: #eef7f2;
+      border-left: 4px solid var(--pine);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      color: var(--pine-dark);
+      margin-bottom: 18px;
+    }
+
+    .participant-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px;
+      background: var(--cream);
+      border: 1px solid #e6decb;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+
+    @media (min-width: 520px) {
+      .participant-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .participant-info strong {
+      font-size: 1rem;
+      color: var(--pine-dark);
+      display: block;
+    }
+
+    .participant-info span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .participant-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-wa {
+      background: #1ebe5d;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-copy {
+      background: #fff;
+      color: var(--pine-dark);
+      border: 1px solid #cbd5cf;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Vista Individual del Participante */
+    .participant-view {
+      text-align: center;
+      padding: 10px 4px;
+    }
+
+    .greeting-name {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--pine-dark);
+      margin: 6px 0 12px;
+    }
+
+    .gift-stage {
+      margin: 24px auto;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gift-emoji {
+      font-size: 5rem;
+      display: inline-block;
+      transition: transform 0.3s ease;
+      filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.18));
+      user-select: none;
+    }
+
+    .gift-shaking {
+      animation: giftShake 0.45s ease-in-out infinite;
+    }
+
+    @keyframes giftShake {
+      0% { transform: rotate(0deg) scale(1); }
+      20% { transform: rotate(-14deg) scale(1.08); }
+      40% { transform: rotate(14deg) scale(1.12); }
+      60% { transform: rotate(-10deg) scale(1.1); }
+      80% { transform: rotate(10deg) scale(1.06); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+
+    .reveal-box {
+      display: none;
+      background: linear-gradient(145deg, #fff9ea 0%, #fce8b2 100%);
+      border: 2px solid var(--gold);
+      border-radius: 18px;
+      padding: 22px 16px;
+      margin-top: 16px;
+      animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      box-shadow: 0 10px 25px rgba(229, 184, 75, 0.35);
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.6) translateY(15px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .reveal-label {
+      font-size: 0.92rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #8a6209;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .reveal-target {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--crimson-dark);
+      margin: 4px 0;
+    }
+
+    .reveal-family {
+      font-size: 0.95rem;
+      color: var(--pine);
+      font-weight: 600;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--pine-dark);
+      color: #fff;
+      border: 1px solid var(--gold);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      z-index: 100;
+      opacity: 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="snowCanvas"></canvas>
+  <canvas id="confettiCanvas"></canvas>
+
+  <header class="topbar">
+    <div class="topbar-title">🎄 Familia Morán • Navidad</div>
+  </header>
+
+  <main class="container">
+    <!-- VISTA DE ORGANIZADOR -->
+    <section id="organizerSection" class="card">
+      <div class="hero-header">
+        <span class="hero-badge">Intercambio Navideño</span>
+        <h1>🎅 Sorteo Familia Morán</h1>
+        <p>14 participantes • Sin regalos dentro de la misma familia • Ciclo único continuo</p>
+      </div>
+
+      <div class="rules-note">
+        <strong>Reglas activas:</strong> Nadie se saca a sí mismo, ningún integrante regala a alguien de su misma familia y las 14 personas quedan unidas en un solo gran ciclo sin grupos cerrados.
+      </div>
+
+      <div class="family-grid" id="familiesContainer"></div>
+
+      <button id="drawBtn" class="btn-primary" type="button">
+        ✨ Realizar Sorteo y Generar Enlaces
+      </button>
+
+      <div id="resultsPanel" class="hidden" style="margin-top: 24px;">
+        <h3 style="margin-bottom: 6px; color: var(--pine-dark);">🎁 Enlaces Privados Listos</h3>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0; margin-bottom: 14px;">
+          Envía cada enlace por privado (WhatsApp o mensaje). Los resultados están ocultos para mantener el secreto.
+        </p>
+        <div id="linksList"></div>
+        <div style="margin-top: 16px; text-align: center;">
+          <button id="redrawBtn" class="btn-secondary" type="button">🔄 Volver a sortear</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISTA DE PARTICIPANTE (ENLACE ÚNICO) -->
+    <section id="participantSection" class="card hidden">
+      <div class="participant-view">
+        <span class="hero-badge">🎄 Invitación Secreta 🎄</span>
+        <p style="margin: 12px 0 0; color: var(--text-muted); font-size: 1rem;">¡Feliz Navidad,</p>
+        <div id="viewerName" class="greeting-name">Participante</div>
+        <p id="viewerFamily" style="margin: 0; font-size: 0.9rem; color: var(--pine); font-weight: 600;"></p>
+
+        <div class="gift-stage">
+          <div id="giftBox" class="gift-emoji">🎁</div>
+
+          <div id="revealContainer" class="reveal-box">
+            <div class="reveal-label">✨ Esta Navidad le darás un regalo a: ✨</div>
+            <div id="targetName" class="reveal-target">---</div>
+            <div id="targetFamily" class="reveal-family">---</div>
+          </div>
+        </div>
+
+        <button id="revealBtn" class="btn-primary" type="button">
+          🎄 Descubre a quién le darás un regalo esta navidad
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast">Enlace copiado</div>
+
+  <script>
+    // =========================================================
+    // 1. DATOS DE LAS 5 FAMILIAS (14 PARTICIPANTES)
+    // =========================================================
+    const PARTICIPANTS = [
+      { id: 0, name: "Alfredo", family: "Familia Morán Contreras" },
+      { id: 1, name: "Ma.Elena", family: "Familia Morán Contreras" },
+      { id: 2, name: "Anilú", family: "Familia Morán Contreras" },
+      { id: 3, name: "Daniel", family: "Familia Morán Contreras" },
+
+      { id: 4, name: "Ernesto", family: "Familia Morán Méndez" },
+      { id: 5, name: "Nayeli", family: "Familia Morán Méndez" },
+      { id: 6, name: "Ernesto Jr", family: "Familia Morán Méndez" },
+      { id: 7, name: "Mich", family: "Familia Morán Méndez" },
+
+      { id: 8, name: "Gabriel", family: "Familia Morán Mucharraz" },
+      { id: 9, name: "Mariana", family: "Familia Morán Mucharraz" },
+      { id: 10, name: "Teté (hija)", family: "Familia Morán Mucharraz" },
+
+      { id: 11, name: "Raúl Alfredo", family: "Familia Morán Sánchez" },
+      { id: 12, name: "Yos", family: "Familia Morán Sánchez" },
+
+      { id: 13, name: "Teté Morán (Mamá)", family: " • Teté Morán" }
+    ];
+
+    // =========================================================
+    // 2. ALGORITMO DE CICLO HAMILTONIANO SIN MISMA FAMILIA
+    // =========================================================
+    function generateSingleCycleAssignment(list) {
+      const n = list.length;
+      const maxAttempts = 5000;
+
+      for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        // Barajar índices con Fisher-Yates
+        const order = Array.from({ length: n }, (_, i) => i);
+        for (let i = n - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [order[i], order[j]] = [order[j], order[i]];
+        }
+
+        // Verificar que cada arista order[k] -> order[(k+1)%n] sea entre familias distintas
+        let valid = true;
+        for (let k = 0; k < n; k++) {
+          const giver = list[order[k]];
+          const receiver = list[order[(k + 1) % n]];
+          if (giver.family === receiver.family) {
+            valid = false;
+            break;
+          }
+        }
+
+        if (valid) {
+          // Construir mapa: giverId -> receiverId
+          const assignment = new Array(n);
+          for (let k = 0; k < n; k++) {
+            assignment[order[k]] = order[(k + 1) % n];
+          }
+          return assignment;
+        }
+      }
+      return null;
+    }
+
+    // Codificación/decodificación segura para URL hash (UTF-8)
+    function encodePayload(obj) {
+      const json = JSON.stringify(obj);
+      const bytes = new TextEncoder().encode(json);
+      let bin = "";
+      bytes.forEach(b => bin += String.fromCharCode(b));
+      return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+
+    function decodePayload(str) {
+      try {
+        let b64 = str.replace(/-/g, "+").replace(/_/g, "/");
+        while (b64.length % 4) b64 += "=";
+        const bin = atob(b64);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        const json = new TextDecoder().decode(bytes);
+        return JSON.parse(json);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // =========================================================
+    // 3. ANIMACIONES DE NIEVE Y CONFETI NAVIDEÑO
+    // =========================================================
+    function initSnow() {
+      const canvas = document.getElementById("snowCanvas");
+      const ctx = canvas.getContext("2d");
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = window.innerHeight;
+
+      window.addEventListener("resize", () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+
+      const flakes = Array.from({ length: 55 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 3 + 1.2,
+        d: Math.random() * 1 + 0.4,
+        drift: Math.random() * 0.6 - 0.3
+      }));
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.78)";
+        ctx.beginPath();
+        for (const f of flakes) {
+          ctx.moveTo(f.x, f.y);
+          ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+          f.y += f.d;
+          f.x += f.drift;
+          if (f.y > h) {
+            f.y = -5;
+            f.x = Math.random() * w;
+          }
+          if (f.x > w) f.x = 0;
+          if (f.x < 0) f.x = w;
+        }
+        ctx.fill();
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    function launchChristmasConfetti() {
+      const canvas = document.getElementById("confettiCanvas");
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width = window.innerWidth;
+      const h = canvas.height = window.innerHeight;
+
+      const colors = ["#b81d24", "#e5b84b", "#1c6342", "#ffffff", "#ff4d5a", "#ffd700"];
+      const particles = Array.from({ length: 130 }, () => ({
+        x: w / 2 + (Math.random() - 0.5) * 120,
+        y: h * 0.45,
+        vx: (Math.random() - 0.5) * 14,
+        vy: (Math.random() - 0.85) * 15,
+        size: Math.random() * 8 + 5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rot: Math.random() * 360,
+        vrot: (Math.random() - 0.5) * 12
+      }));
+
+      let frames = 0;
+      function animate() {
+        ctx.clearRect(0, 0, w, h);
+        let alive = false;
+        for (const p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.35; // gravedad
+          p.rot += p.vrot;
+          if (p.y < h + 30) alive = true;
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rot * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+          ctx.restore();
+        }
+        frames++;
+        if (alive && frames < 160) {
+          requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, w, h);
+        }
+      }
+      animate();
+    }
+
+    // =========================================================
+    // 4. LÓGICA DE INTERFAZ Y RUTAS
+    // =========================================================
+    function showToast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      setTimeout(() => el.classList.remove("show"), 2400);
+    }
+
+    function renderFamilies() {
+      const container = document.getElementById("familiesContainer");
+      const grouped = {};
+      PARTICIPANTS.forEach(p => {
+        if (!grouped[p.family]) grouped[p.family] = [];
+        grouped[p.family].push(p.name);
+      });
+
+      container.innerHTML = Object.entries(grouped).map(([fam, members]) => `
+        <div class="family-box">
+          <h4>${fam}</h4>
+          <ul>
+            ${members.map(m => `<li>${m}</li>`).join("")}
+          </ul>
+        </div>
+      `).join("");
+    }
+
+    function renderOrganizerLinks(assignment) {
+      const baseUrl = window.location.href.split("#")[0];
+      const listEl = document.getElementById("linksList");
+
+      listEl.innerHTML = PARTICIPANTS.map(giver => {
+        const receiverId = assignment[giver.id];
+        const token = encodePayload({ g: giver.id, r: receiverId });
+        const personalUrl = `${baseUrl}#gift=${token}`;
+        const waText = encodeURIComponent(
+          `🎄 ¡Hola ${giver.name}! Ya está listo el sorteo del Intercambio Navideño de la Familia Morán 🎅🎁\n\nEntra a tu enlace personal y secreto para descubrir a quién te toca regalar:\n${personalUrl}`
+        );
+
+        return `
+          <div class="participant-row">
+            <div class="participant-info">
+              <strong>${giver.name}</strong>
+              <span>${giver.family}</span>
+            </div>
+            <div class="participant-actions">
+              <a class="btn-wa" href="https://wa.me/?text=${waText}" target="_blank" rel="noopener">
+                📲 WhatsApp
+              </a>
+              <button class="btn-copy" type="button" data-url="${personalUrl}">
+                📋 Copiar enlace
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      listEl.querySelectorAll(".btn-copy").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const url = btn.getAttribute("data-url");
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(() => showToast("Enlace secreto copiado ✅"));
+          } else {
+            const temp = document.createElement("input");
+            temp.value = url;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand("copy");
+            document.body.removeChild(temp);
+            showToast("Enlace secreto copiado ✅");
+          }
+        });
+      });
+
+      document.getElementById("resultsPanel").classList.remove("hidden");
+    }
+
+    function initParticipantMode(data) {
+      const giver = PARTICIPANTS[data.g];
+      const receiver = PARTICIPANTS[data.r];
+
+      if (!giver || !receiver) return false;
+
+      document.getElementById("organizerSection").classList.add("hidden");
+      document.getElementById("participantSection").classList.remove("hidden");
+
+      document.getElementById("viewerName").textContent = giver.name + "!";
+      document.getElementById("viewerFamily").textContent = giver.family;
+
+      const revealBtn = document.getElementById("revealBtn");
+      const giftBox = document.getElementById("giftBox");
+      const revealContainer = document.getElementById("revealContainer");
+
+      let revealed = false;
+
+      revealBtn.addEventListener("click", () => {
+        if (revealed) return;
+        revealed = true;
+
+        revealBtn.disabled = true;
+        revealBtn.textContent = "✨ Abriendo tu regalo mágico... ✨";
+        giftBox.classList.add("gift-shaking");
+
+        setTimeout(() => {
+          giftBox.classList.remove("gift-shaking");
+          giftBox.textContent = "🎄🎅🎁";
+          giftBox.style.fontSize = "3.4rem";
+
+          document.getElementById("targetName").textContent = receiver.name;
+          document.getElementById("targetFamily").textContent = receiver.family;
+          revealContainer.style.display = "block";
+
+          launchChristmasConfetti();
+          revealBtn.style.display = "none";
+        }, 1200);
+      });
+
+      return true;
+    }
+
+    // =========================================================
+    // 5. INICIALIZACIÓN GENERAL
+    // =========================================================
+    document.addEventListener("DOMContentLoaded", () => {
+      initSnow();
+
+      // Revisar si viene un enlace único en el hash (#gift=...)
+      const hash = window.location.hash || "";
+      if (hash.startsWith("#gift=")) {
+        const token = hash.slice(6);
+        const decoded = decodePayload(token);
+        if (decoded && initParticipantMode(decoded)) {
+          return;
+        }
+      }
+
+      // Modo organizador
+      renderFamilies();
+
+      const runDraw = () => {
+        const assignment = generateSingleCycleAssignment(PARTICIPANTS);
+        if (!assignment) {
+          alert("No se pudo generar una combinación válida, intenta de nuevo.");
+          return;
+        }
+        renderOrganizerLinks(assignment);
+        showToast("🎄 ¡Sorteo realizado con éxito!");
+      };
+
+      document.getElementById("drawBtn").addEventListener("click", runDraw);
+      document.getElementById("redrawBtn").addEventListener("click", runDraw);
+    });
+  </script>
+</body>
+</html>
